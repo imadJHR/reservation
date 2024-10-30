@@ -29,7 +29,7 @@ export default function Component() {
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/reservations");
+        const response = await axios.get("https://reservation-api-xdr1.onrender.com/reservations");
         setReservations(response.data);
         setLoading(false);
         setErrorMessage("failed to fetch data");
@@ -42,7 +42,7 @@ export default function Component() {
 
   const deleteReservation = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/reservation/${id}`);
+      await axios.delete(`https://reservation-api-xdr1.onrender.com/reservation/${id}`);
       setReservations((prevReservations) =>
         prevReservations.filter((reservations) => reservations._id !== id)
       );
