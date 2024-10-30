@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IoMenu } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { MdOutlineRestaurantMenu } from "react-icons/md";
+import LOGO from "../../public/upscaled-2x-image-upscaled__6_-removebg-preview.png";
 
 const HeroSection = () => {
   const [open, setOpen] = useState(false);
@@ -34,7 +35,7 @@ const HeroSection = () => {
               href="/"
               className="-m-1.5 p-1.5 text-white font-bold text-2xl"
             >
-              JOHAR RST
+              <img src={LOGO} alt="" width={100} />
             </Link>
           </div>
           <div className="flex lg:hidden ">
@@ -53,10 +54,15 @@ const HeroSection = () => {
             {open && (
               <div className=" bg-black w-full h-full rounded-xl text-white flex flex-col  z-50 origin-top-right transform p-2 transition ">
                 <ul className="bottom-3">
-                    <li><a href="">Menu</a></li>
-                    <li><a href="#reservation">Reservations</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                  <li>
+                    <a href="#menu">Menu</a>
+                  </li>
+                  <li>
+                    <a href="#reservation">Reservations</a>
+                  </li>
+                  <li>
+                    <a href="#about">About</a>
+                  </li>
                 </ul>
               </div>
             )}
@@ -100,9 +106,11 @@ const HeroSection = () => {
             locally-sourced ingredients to create an unforgettable dining
             experience.
           </p>
-          <Button className="bg-white text-black hover:bg-gray-200 text-lg py-6 px-8">
-            Reserve a Table
-          </Button>
+          <a href="#reservation">
+            <Button className="bg-white text-black hover:bg-gray-200 text-lg py-6 px-8">
+              Reserve a Table
+            </Button>
+          </a>
         </div>
       </div>
     </div>

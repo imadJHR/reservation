@@ -2,12 +2,13 @@
 import express from "express";
 import cors from "cors";
 import { body, validationResult } from "express-validator";
-import mongoose, { mongo } from "mongoose"; // Import Mongoose
+import mongoose from "mongoose"; // Import Mongoose
 import bodyParser from "body-parser";
 import dotenv from "dotenv/config.js"; // Load environment variables
 
 // Initialize Express app
 const app = express();
+
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(cors()); // Enable CORS
 app.use(bodyParser.json());
@@ -29,7 +30,7 @@ const reservationSchema = new mongoose.Schema(
     phone: { type: String, required: true },
     date: { type: Date, required: true },
     time: { type: String, required: true },
-    specialRequests: { type: String , required:true },
+    specialRequests: { type: String, required: true },
     guests: { type: Number, require: true },
   },
   { collection: "Reservation" }
@@ -122,7 +123,7 @@ app.post("/reserve", reservationValidationRules, async (req, res) => {
 });
 
 // Route to get all reservations (optional for debugging)
-app.get('/reservations', async (req, res) => {
+app.get("/reservations", async (req, res) => {
   try {
     // Fetch all reservations from the database
     const allReservations = await Reservation.find();
@@ -130,34 +131,46 @@ app.get('/reservations', async (req, res) => {
     res.json(allReservations);
   } catch (err) {
     // Handle errors during the fetch operation
-    res.status(500).json({ error: 'Failed to retrieve reservations', details: err });
+    res
+      .status(500)
+      .json({ error: "Failed to retrieve reservations", details: err });
+  }
+});
+
+app.delete("/reservation/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Reservation.findByIdAndDelete(id);
+    res.status(200).json({ message: "Reservation deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete reservation" });
   }
 });
 //schema
 const subscriberSchema = new mongoose.Schema({
   email: { type: String, required: true },
-})
-const Subscriber = mongoose.model('Subscriber',subscriberSchema)
+});
+const Subscriber = mongoose.model("Subscriber", subscriberSchema);
 //route
-app.post('/subscribe', async (req, res) => {
-  const { email } = req.body
+app.post("/subscribe", async (req, res) => {
+  const { email } = req.body;
   if (!email || !validateEmail(email)) {
-    return res.status(400).json({ message: 'Invalid email format' });
+    return res.status(400).json({ message: "Invalid email format" });
   }
   try {
     const existingSubscriber = await Subscriber.findOne({ email });
     if (existingSubscriber) {
-      return res.status(400).json({ message: 'Email already subscribed' });
+      return res.status(400).json({ message: "Email already subscribed" });
     }
 
     const newSubscriber = new Subscriber({ email });
     await newSubscriber.save();
 
-    return res.status(200).json({ message: 'Subscribed successfully!' });
+    return res.status(200).json({ message: "Subscribed successfully!" });
   } catch (error) {
-    return res.status(500).json({ message: 'Error subscribing' });
+    return res.status(500).json({ message: "Error subscribing" });
   }
-})
+});
 // Validate email format
 const validateEmail = (email) => {
   const re = /\S+@\S+\.\S+/;
