@@ -31,7 +31,7 @@ const ReservationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/reserve", {
+      const response = await fetch("https://reservation-api-xdr1.onrender.com/reserve", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
